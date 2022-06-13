@@ -1,9 +1,13 @@
 # google_maps_flutter_tutorial
 
-A new Flutter project.
+Google Map Flutter project.
 
 ## Getting Started
 
+<img src="https://raw.githubusercontent.com/nslog11/flutter_easyloading/master/images/gif01.gif" width=200 height=429/> 
+<img src="https://raw.githubusercontent.com/nslog11/flutter_easyloading/master/images/gif02.gif" width=200 height=429/> 
+<img src="https://raw.githubusercontent.com/nslog11/flutter_easyloading/master/images/gif03.gif" width=200 height=429/> 
+<img src="https://raw.githubusercontent.com/nslog11/flutter_easyloading/master/images/gif04.gif" width=200 height=429/>
 This project is a starting point for a Flutter application.
 
 A few resources to get you started if this is your first Flutter project:
