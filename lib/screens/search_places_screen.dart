@@ -5,13 +5,13 @@ import 'package:google_maps_webservice/places.dart';
 import 'package:google_api_headers/google_api_headers.dart';
 
 class SearchPlacesScreen extends StatefulWidget {
-  const SearchPlacesScreen({Key? key}) : super(key: key);
+  const SearchPlacesScreen({Key key}) : super(key: key);
 
   @override
   State<SearchPlacesScreen> createState() => _SearchPlacesScreenState();
 }
 
-const kGoogleApiKey = 'Your Google Map API Key here';
+const kGoogleApiKey = 'AIzaSyD97I000X8gbAY-4WG4pljkM13-c2VSmSM';
 final homeScaffoldKey = GlobalKey<ScaffoldState>();
 
 class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
@@ -19,7 +19,7 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
 
   Set<Marker> markersList = {};
 
-  late GoogleMapController googleMapController;
+  GoogleMapController googleMapController;
 
   final Mode _mode = Mode.overlay;
 
@@ -56,7 +56,7 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
   }
 
   Future<void> _handlePressButton() async {
-    Prediction? p = await PlacesAutocomplete.show(
+    Prediction p = await PlacesAutocomplete.show(
       context: context,
       apiKey: kGoogleApiKey,
       onError: onError,
@@ -72,24 +72,24 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
     );
 
 
-    displayPrediction(p!,homeScaffoldKey.currentState);
+    displayPrediction(p,homeScaffoldKey.currentState);
   }
 
   void onError(PlacesAutocompleteResponse response){
-    homeScaffoldKey.currentState!.showSnackBar(SnackBar(content: Text(response.errorMessage!)));
+    homeScaffoldKey.currentState.showSnackBar(SnackBar(content: Text(response.errorMessage)));
   }
 
-  Future<void> displayPrediction(Prediction p, ScaffoldState? currentState) async {
+  Future<void> displayPrediction(Prediction p, ScaffoldState currentState) async {
 
     GoogleMapsPlaces places = GoogleMapsPlaces(
       apiKey: kGoogleApiKey,
       apiHeaders: await const GoogleApiHeaders().getHeaders()
     );
 
-    PlacesDetailsResponse detail = await places.getDetailsByPlaceId(p.placeId!);
+    PlacesDetailsResponse detail = await places.getDetailsByPlaceId(p.placeId);
 
-    final lat = detail.result.geometry!.location.lat;
-    final lng = detail.result.geometry!.location.lng;
+    final lat = detail.result.geometry.location.lat;
+    final lng = detail.result.geometry.location.lng;
 
     markersList.clear();
     markersList.add(Marker(markerId: const MarkerId("0"),position: LatLng(lat, lng),infoWindow: InfoWindow(title: detail.result.name)));

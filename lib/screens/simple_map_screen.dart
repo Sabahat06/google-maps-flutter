@@ -2,23 +2,37 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:google_maps_flutter_tutorial/static_var.dart';
 
 class SimpleMapScreen extends StatefulWidget {
-  const SimpleMapScreen({Key? key}) : super(key: key);
+  const SimpleMapScreen({Key key}) : super(key: key);
 
   @override
   _SimpleMapScreenState createState() => _SimpleMapScreenState();
 }
 
 class _SimpleMapScreenState extends State<SimpleMapScreen> {
+  Set<Marker> markers = {};
+  @override
+  void initState() {
+    _requestTimer();
+    super.initState();
+  }
+
+  Future<void> _requestTimer() async {
+    await currentLocationOnMap();
+    await Future.delayed(
+      const Duration(seconds: 1),
+    );
+    _requestTimer();
+  }
+
   final Completer<GoogleMapController> _controller = Completer();
-
-  static const CameraPosition initialPosition = CameraPosition(target: LatLng(37.42796133580664, -122.085749655962), zoom: 14.0);
-
-  static const CameraPosition targetPosition = CameraPosition(target: LatLng(37.43296265331129, -122.08832357078792), zoom: 14.0, bearing: 192.0, tilt: 60);
+  CameraPosition initialPosition = CameraPosition(target: LatLng(StaticVariable.currentLocation.latitude, StaticVariable.currentLocation.longitude), zoom: 20.0);
 
   @override
   Widget build(BuildContext context) {
+    markers.add(Marker(markerId: const MarkerId('currentLocation'),position: LatLng(StaticVariable.currentLocation.latitude, StaticVariable.currentLocation.longitude)));
     return Scaffold(
       appBar: AppBar(
         title: const Text("Simple Google Map"),
@@ -30,19 +44,18 @@ class _SimpleMapScreenState extends State<SimpleMapScreen> {
         onMapCreated: (GoogleMapController controller) {
           _controller.complete(controller);
         },
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          goToLake();
-        },
-        label: const Text("To the lake!"),
-        icon: const Icon(Icons.directions_boat),
+        markers: markers
+
       ),
     );
   }
 
-  Future<void> goToLake() async {
+
+  Future<void> currentLocationOnMap() async {
+    initialPosition = CameraPosition(target: LatLng(StaticVariable.currentLocation.latitude, StaticVariable.currentLocation.longitude), zoom: 16.0);
     final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(targetPosition));
+    controller.animateCamera(CameraUpdate.newCameraPosition(initialPosition));
+    markers.clear();
+    markers.add(Marker(markerId: const MarkerId('currentLocation'),position: LatLng(StaticVariable.currentLocation.latitude, StaticVariable.currentLocation.longitude)));
   }
 }

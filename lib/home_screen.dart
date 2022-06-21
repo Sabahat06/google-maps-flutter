@@ -2,15 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter_tutorial/screens/current_location_screen.dart';
 import 'package:google_maps_flutter_tutorial/screens/search_places_screen.dart';
 import 'package:google_maps_flutter_tutorial/screens/simple_map_screen.dart';
+import 'package:google_maps_flutter_tutorial/static_var.dart';
+import 'package:location/location.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({Key key}) : super(key: key);
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
+  @override
+  void initState() {
+    loadCurrentLocation();
+    super.initState();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,7 +36,9 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               GestureDetector(
                 onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context){return const SimpleMapScreen();}));
+                  if(StaticVariable.currentLocation.latitude!=null) {
+                    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context){return const SimpleMapScreen();}));
+                  }
                 },
                 child: Container(
                   color: Colors.green,
@@ -64,5 +76,20 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
+  }
+
+  Future<LocationData> loadCurrentLocation() async {
+    Location location = Location();
+    PermissionStatus permissionStatus = await location.hasPermission();
+    if (permissionStatus == PermissionStatus.denied) {
+      permissionStatus = await location.requestPermission();
+      if (permissionStatus == PermissionStatus.denied) {
+        return null;
+      }
+    }
+    StaticVariable.currentLocation = await location.getLocation();
+    location.onLocationChanged.listen((event) async {
+      StaticVariable.currentLocation = await location.getLocation();
+    });
   }
 }
