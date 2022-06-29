@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter_tutorial/screens/current_location_screen.dart';
+import 'package:google_maps_flutter_tutorial/screens/product_screen.dart';
 import 'package:google_maps_flutter_tutorial/screens/search_places_screen.dart';
 import 'package:google_maps_flutter_tutorial/screens/simple_map_screen.dart';
 import 'package:google_maps_flutter_tutorial/static_var.dart';
@@ -69,6 +70,18 @@ class _HomeScreenState extends State<HomeScreen> {
                   width: double.infinity,
                   height: 45,
                   child: const Center(child: Text("Search Places", style: TextStyle(fontSize: 16, color: Colors.white),)),
+                ),
+              ),
+              const SizedBox(height: 10,),
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context){return ProductScreenTab();}));
+                },
+                child: Container(
+                  color: Colors.indigo,
+                  width: double.infinity,
+                  height: 45,
+                  child: const Center(child: Text("Get Product", style: TextStyle(fontSize: 16, color: Colors.white),)),
                 ),
               ),
             ],

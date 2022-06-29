@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_flutter_tutorial/static_var.dart';
 
@@ -45,7 +46,6 @@ class _SimpleMapScreenState extends State<SimpleMapScreen> {
           _controller.complete(controller);
         },
         markers: markers
-
       ),
     );
   }
@@ -56,6 +56,8 @@ class _SimpleMapScreenState extends State<SimpleMapScreen> {
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(initialPosition));
     markers.clear();
-    markers.add(Marker(markerId: const MarkerId('currentLocation'),position: LatLng(StaticVariable.currentLocation.latitude, StaticVariable.currentLocation.longitude)));
+    setState(() {
+      markers.add(Marker(markerId: const MarkerId('currentLocation'),position: LatLng(StaticVariable.currentLocation.latitude, StaticVariable.currentLocation.longitude)));
+    });
   }
 }
