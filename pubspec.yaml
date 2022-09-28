@@ -41,7 +41,8 @@ dependencies:
   geolocator: ^8.0.1
   location: ^4.3.0
   http:
-  provider: 
+  provider:
+  flutter_polyline_points:
   flutter_google_places: ^0.3.0
 
 dev_dependencies:

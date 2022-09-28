@@ -11,7 +11,7 @@ class SearchPlacesScreen extends StatefulWidget {
   State<SearchPlacesScreen> createState() => _SearchPlacesScreenState();
 }
 
-const kGoogleApiKey = 'AIzaSyD97I000X8gbAY-4WG4pljkM13-c2VSmSM';
+const kGoogleApiKey = 'AIzaSyColRELIlq7P8tMLqsShIZRAaGfI2OCNI8';
 final homeScaffoldKey = GlobalKey<ScaffoldState>();
 
 class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
@@ -76,7 +76,7 @@ class _SearchPlacesScreenState extends State<SearchPlacesScreen> {
   }
 
   void onError(PlacesAutocompleteResponse response){
-    homeScaffoldKey.currentState.showSnackBar(SnackBar(content: Text(response.errorMessage)));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(response.errorMessage)));
   }
 
   Future<void> displayPrediction(Prediction p, ScaffoldState currentState) async {
